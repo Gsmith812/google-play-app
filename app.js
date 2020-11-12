@@ -1,11 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
-const cors = require('cors');
 
 const app = express();
 
 app.use(morgan('dev'));
-app.use(cors());
 
 const playstoreApps = require('./playstore.js');
 
@@ -14,7 +12,7 @@ app.get('/apps' , (req, res) => {
     let results = playstoreApps;
     if(sort) {
         if(!['app', 'rating'].includes(sort)) {
-            return res.send('Must be sorted by app or rating');
+            return res.status(400).send('Must be sorted by app or rating');
         }
         results.sort((a,b) => {
             return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
